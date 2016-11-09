@@ -1,0 +1,8 @@
+module SAMBA.Device.SAM9260
+SAM9260 3.1 SAM9260.qml
+SAM9260Config 3.1 SAM9260Config.qml
+SAM9260LowlevelApplet 3.1 SAM9260LowlevelApplet.qml
+SAM9260ExtRamApplet 3.1 SAM9260ExtRamApplet.qml
+SAM9260DataFlashApplet 3.1 SAM9260DataFlashApplet.qml
+SAM9260NANDFlashApplet 3.1 SAM9260NANDFlashApplet.qml
+SAM9260SerialFlashApplet 3.1 SAM9260SerialFlashApplet.qml

@@ -242,7 +242,7 @@ AppletBase {
 		if (typeof offset === "undefined") {
 			offset = 0
 		} else {
-			if ((offset & (pageSize - 1)) !== 0)
+			if ((offset % pageSize) !== 0)
 				throw new Error("Offset is not page-aligned")
 			offset /= pageSize
 		}
@@ -251,7 +251,7 @@ AppletBase {
 		if (size === undefined) {
 			size = memoryPages - offset
 		} else {
-			if ((size & (pageSize - 1)) !== 0)
+			if ((size % pageSize) !== 0)
 				throw new Error("Size is not page-aligned")
 			size /= pageSize
 		}
@@ -370,12 +370,12 @@ AppletBase {
 			throw new Error("Applet '" + name +
 			                "' does not support 'read pages' command")
 
-		if ((offset & (pageSize - 1)) !== 0)
+		if ((offset % pageSize) !== 0)
 			throw new Error("Read offset is not page-aligned")
 		offset /= pageSize
 
 		// TODO handle non-page aligned sizes
-		if ((size & (pageSize - 1)) !== 0)
+		if ((size % pageSize) !== 0)
 			throw new Error("Read size is not page-aligned")
 		size /= pageSize
 
@@ -447,14 +447,14 @@ AppletBase {
 		if (!!bootFile)
 			prepareBootFile(connection, device, data)
 
-		if ((offset & (pageSize - 1)) !== 0) {
+		if ((offset % pageSize) !== 0) {
 			throw new Error("Verify offset is not page-aligned")
 		}
 		offset /= pageSize
 
 		// handle input data padding
-		if ((data.length & (pageSize - 1)) !== 0) {
-			var pad = pageSize - (data.length & (pageSize - 1))
+		if ((data.length % pageSize) !== 0) {
+			var pad = pageSize - (data.length % pageSize)
 			data.pad(pad, paddingByte)
 			print("Added " + pad + " bytes of padding to align to page size")
 		}
@@ -512,7 +512,7 @@ AppletBase {
 
 		cmd = command("writePages")
 		if (cmd) {
-			if ((data.length & (pageSize - 1)) != 0)
+			if ((data.length % pageSize) != 0)
 				throw new Error("Invalid write data buffer length " +
 						"(must be a multiple of page size)");
 			length = data.length / pageSize
@@ -544,7 +544,7 @@ AppletBase {
 		} else {
 			cmd = command("legacyWriteBuffer")
 			if (cmd) {
-				if ((data.length & (pageSize - 1)) != 0)
+				if ((data.length % pageSize) != 0)
 					throw new Error("Invalid write data buffer length " +
 							"(must be a multiple of page size)")
 				length = data.length / pageSize
@@ -605,13 +605,13 @@ AppletBase {
 		if (!!bootFile)
 			prepareBootFile(connection, device, data)
 
-		if ((offset & (pageSize - 1)) !== 0)
+		if ((offset % pageSize) !== 0)
 			throw new Error("Write offset is not page-aligned")
 		offset /= pageSize
 
 		// handle input data padding
-		if ((data.length & (pageSize - 1)) !== 0) {
-			var pad = pageSize - (data.length & (pageSize - 1))
+		if ((data.length % pageSize) !== 0) {
+			var pad = pageSize - (data.length % pageSize)
 			data.pad(pad, paddingByte)
 			print("Added " + pad + " bytes of padding to align to page size")
 		}
@@ -626,7 +626,7 @@ AppletBase {
 			var pagesToWrite = remaining
 
 			if (trimPadding) {
-				var pagesToEndOfBlock = Math.min(remaining, eraseSupport - (offset & (eraseSupport - 1)))
+				var pagesToEndOfBlock = Math.min(remaining, eraseSupport - (offset % eraseSupport))
 
 				// only skip empty pages for full blocks
 				if (pagesToEndOfBlock == eraseSupport)

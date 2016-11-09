@@ -20,7 +20,7 @@ SambaApplet::SambaApplet(QQuickItem* parent)
 	  m_codeUrl(""),
 	  m_codeAddr(0),
 	  m_mailboxAddr(0),
-	  m_traceLevel(5),
+	  m_traceLevel(4),
 	  m_retries(20),
 	  m_bufferAddr(0),
 	  m_bufferSize(0),

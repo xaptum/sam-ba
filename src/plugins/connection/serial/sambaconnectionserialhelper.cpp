@@ -16,7 +16,7 @@
 #include <QSerialPortInfo>
 #include <QStringList>
 
-#define MAX_BUF_SIZE (32*1024)
+#define MAX_BUF_SIZE (1*1024)
 
 #define ATMEL_USB_VID 0x03eb
 #define SAMBA_USB_PID 0x6124
@@ -131,7 +131,7 @@ void SambaConnectionSerialHelper::open()
 		// switch to binary mode
 		writeSerial(QString("N#"));
 		QString resp(QString::fromLatin1(readAllSerial(2)));
-		if (resp == "\n\r")
+		if (resp.isEmpty() || resp == "\n\r")
 		{
 			emit connectionOpened(m_at91);
 		}
@@ -257,14 +257,18 @@ SambaByteArray *SambaConnectionSerialHelper::read(quint32 address, unsigned leng
 
 	/* timeout=0 -> default timeout, timeout<0 -> no timeout */
 	if (timeout == 0)
-		timeout = 10;
+		timeout = 1000;
 
 	int offset = 0;
 	timer.start();
 	while (length > 0)
 	{
-		if (timeout > 0 && (timer.elapsed() >= timeout))
+		if (timeout > 0 && (timer.elapsed() >= timeout)) {
+			qCCritical(sambaLogConnSerial).noquote().nospace() <<
+				QString().sprintf("Timeout while reading from '%s'",
+					port().toLocal8Bit().constData());
 			break;
+		}
 		int chunkSize = length > MAX_BUF_SIZE ? MAX_BUF_SIZE : length;
 		if ((chunkSize & 63) == 0)
 			chunkSize--;

@@ -34,6 +34,11 @@ struct mpu_regs {
 	const struct mpu_device* devices;
 };
 
+static const struct mpu_device sam9260_devices[] = {
+	{ "SAM9260", 0x00000000 },
+	{ NULL, 0},
+};
+
 static const struct mpu_device sam9xx5_devices[] = {
 	{ "SAM9G15", 0x00000000 },
 	{ "SAM9G35", 0x00000001 },
@@ -83,6 +88,7 @@ static const struct mpu_regs mpu_regs[] = {
 	{ "SAMA5D4x", 0xfc069040, 0xfffffff0, 0x8a5c07c0, 0xfc069044, 0xfc068644, 0, sama5d4_devices },
 	{ "SAMA5D3x", 0xffffee40, 0xffffffff, 0x8a5c07c2, 0xffffee44, 0xfffffe44, 0, sama5d3_devices },
 	{ "SAM9xx5",  0xfffff240, 0xffffffff, 0x819a05a1, 0xfffff244, 0xfffffe44, 0, sam9xx5_devices },
+	{ "SAM9260",  0xfffff240, 0xffffffe0, 0x019803a0, 0xfffff244, 0xfffffe44, 0, sam9260_devices },
 	{ NULL, 0, 0, 0, 0, 0, 0, NULL },
 };
 
