@@ -17,3 +17,5 @@ SecureBootConfigApplet 3.2 SecureBootConfigApplet.qml
 SerialConfig 3.2 SerialConfig.qml
 SerialFlashApplet 3.2 SerialFlashApplet.qml
 SerialFlashConfig 3.2 SerialFlashConfig.qml
+USARTApplet 3.2 USARTApplet.qml
+LDRApplet 3.2 LDRApplet.qml
