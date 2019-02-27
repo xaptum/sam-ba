@@ -4,17 +4,20 @@ import SAMBA.Device.SAMA5D2 3.2
 
 SerialConnection {
 	//Define offsets
-	property int ram:          0x20000000;
-	property int sram:         0x00200000;
-	property int start_uboot:  0x06f00000;
-	property int start_dtb:    0x01000000;
-	property int start_kernel: 0x02000000;
+	property int ram:            0x20000000;
+	property int sram:           0x00200000;
+	property int mmc	   
+	property int start_uboot:    0x06f00000;
+	property int start_dtb:      0x01000000;
+	property int start_kernel:   0x02000000;
+	property int start_identity: 0x40000000;
 	device: SAMA5D2Xplained {
 	}
 
 	onConnectionOpened: {
-		// initialize USART applet
-	
+		//Write the provisioning script to RAM
+		initializeApplet("ramloader")
+		
 		console.log(
 			"---- Writing u-boot.bin at offset 0x", start_uboot.toString(16), 
 			", dtb at offset 0x", start_dtb.toString(16), 
@@ -22,7 +25,6 @@ SerialConnection {
 			", RAM start addr 0x", ram.toString(16),
 			"----");
 				
-		initializeApplet("ramloader")
 
 		applet.write(ram + start_dtb, "images/at91-xaprc001.dtb", false)
 		applet.write(ram + start_kernel, "images/zImage", false)
@@ -31,8 +33,5 @@ SerialConnection {
 		
 		//Go to the beginning of the bootloader
 		this.go(sram)
-		
-		console.log("Press Ctrl+C to exit");
-		while(1){}
 	}
 }
